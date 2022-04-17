@@ -89,10 +89,14 @@ namespace ChemSolution_re_API.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<BlogPostDTO>> PostBlogPost(BlogPostDTO blogPostDTO)
         {
-            _context.BlogPosts.Add(_mapper.Map<BlogPost>(blogPostDTO));
+            var blogPost = _mapper.Map<BlogPost>(blogPostDTO);
+            _context.BlogPosts.Add(blogPost);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetBlogPost", new { id = blogPostDTO.BlogPostId }, blogPostDTO);
+            return CreatedAtAction(
+                nameof(GetBlogPosts),
+                new { id = blogPost.BlogPostId },
+                _mapper.Map<BlogPostDTO>(blogPost));
         }
 
         // DELETE: api/BlogPosts/5

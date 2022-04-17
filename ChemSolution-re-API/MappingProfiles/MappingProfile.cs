@@ -18,6 +18,9 @@ namespace ChemSolution_re_API.MappingProfiles
 
             CreateMap<BlogPost, BlogPostDTO>();
             CreateMap<BlogPostDTO, BlogPost>();
+
+            CreateMap<MaterialGroup, MaterialGroupDTO>();
+            CreateMap<MaterialGroupDTO, MaterialGroup>();
         }
     }
 }
