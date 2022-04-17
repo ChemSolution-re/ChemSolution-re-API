@@ -1,8 +1,10 @@
-﻿namespace ChemSolution_re_API.Services.JWT.Models
+﻿using ChemSolution_re_API.Entities;
+
+namespace ChemSolution_re_API.Services.JWT.Models
 {
     public class JwtUser
     {
         public Guid Id { set; get; }
-        public string Role { set; get; } = string.Empty;
+        public Role Role { set; get; }
     }
 }
