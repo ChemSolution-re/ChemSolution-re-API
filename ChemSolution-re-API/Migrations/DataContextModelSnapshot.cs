@@ -136,7 +136,7 @@ namespace ChemSolution_re_API.Migrations
 
                     b.HasKey("CategoryId");
 
-                    b.ToTable("Category");
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("ChemSolution_re_API.Entities.Element", b =>
@@ -298,7 +298,7 @@ namespace ChemSolution_re_API.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Order");
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("ChemSolution_re_API.Entities.Request", b =>
@@ -381,10 +381,9 @@ namespace ChemSolution_re_API.Migrations
                     b.Property<int>("Honesty")
                         .HasColumnType("int");
 
-                    b.Property<string>("Password")
+                    b.Property<string>("PasswordHash")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Rating")
                         .HasColumnType("int");

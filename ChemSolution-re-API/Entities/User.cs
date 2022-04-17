@@ -10,8 +10,7 @@ namespace ChemSolution_re_API.Entities
         [StringLength(50, MinimumLength = 3)]
         public string UserName { set; get; } = string.Empty;
         public DateTime DateOfBirth { set; get; }
-        [StringLength(50, MinimumLength = 8)]
-        public string Password { set; get; } = string.Empty;
+        public string PasswordHash { get; set; } = string.Empty;
         [Range(0, int.MaxValue)]
         public int Balance { set; get; }
         [Range(0, int.MaxValue)]
