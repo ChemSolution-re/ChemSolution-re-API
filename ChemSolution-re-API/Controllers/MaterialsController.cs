@@ -136,7 +136,7 @@ namespace ChemSolution_re_API.Controllers
                 if (user != null)
                 {
                     bool isNew = user.ResearchHistorys.SingleOrDefault(m => m.MaterialId == material.Id) == null;
-                    var achievementsId = new List<int>();
+                    var achievementsId = new List<Guid>();
                     if (isNew)
                     {
                         user.ResearchHistorys.Add(
@@ -183,7 +183,7 @@ namespace ChemSolution_re_API.Controllers
             return (tmpU1.Count == tmpU2.Count) ? !tmpU1.Except(tmpU2).Any() : false;
         }
 
-        private async Task<List<int>> ComplateAchivmentsAsync(User user)
+        private async Task<List<Guid>> ComplateAchivmentsAsync(User user)
         {
             var tmpU1 = user.Materials.GroupBy(u => u.MaterialGroupId)
                 .Select(ug => (Key: ug.Key, Amount: ug.Count())).ToList();
@@ -191,7 +191,7 @@ namespace ChemSolution_re_API.Controllers
                 .Select(a => (Key: a.MaterialGroupId, Amount: a.CountGoal)).ToList();
             var res = tmpU1.Intersect(tmpU2);
 
-            var achievementsId = new List<int>();
+            var achievementsId = new List<Guid>();
 
             foreach (var (Key, Amount) in res)
             {

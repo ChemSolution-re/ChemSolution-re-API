@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ChemSolution_re_API.Entities
+namespace ChemSolution_re_API.DTO.Request
 {
-    public class Achievement
+    public class UpdateAchievement
     {
         public Guid Id { get; set; }
         [StringLength(50, MinimumLength = 5)]
@@ -19,7 +19,5 @@ namespace ChemSolution_re_API.Entities
         public int CountGoal { get; set; }
 
         public Guid MaterialGroupId { get; set; }
-        public MaterialGroup MaterialGroup { get; set; } = new();
-        public List<User> Users { set; get; } = new List<User>();
     }
 }
