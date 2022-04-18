@@ -60,7 +60,7 @@ namespace ChemSolution_re_API.Controllers
             }
 
             blogPost.Title = blogPostDTO.Title;
-            blogPost.Category = blogPostDTO.Category;
+            blogPost.BlogPostCategory = Enum.Parse<BlogPostCategory>(blogPostDTO.BlogPostCategory);
             blogPost.Information = blogPostDTO.Information;
             blogPost.Image = blogPostDTO.Image;
             blogPost.IsLocked = blogPostDTO.IsLocked;

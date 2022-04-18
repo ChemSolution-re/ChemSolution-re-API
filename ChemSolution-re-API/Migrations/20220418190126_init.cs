@@ -15,7 +15,7 @@ namespace ChemSolution_re_API.Migrations
                 {
                     BlogPostId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Category = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BlogPostCategory = table.Column<byte>(type: "tinyint", nullable: false),
                     Information = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Image = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsLocked = table.Column<bool>(type: "bit", nullable: false)
@@ -81,17 +81,6 @@ namespace ChemSolution_re_API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Valences",
-                columns: table => new
-                {
-                    ValenceId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Valences", x => x.ValenceId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Elements",
                 columns: table => new
                 {
@@ -128,8 +117,7 @@ namespace ChemSolution_re_API.Migrations
                 name: "Achievements",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Heading = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     ImgAchievement = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
@@ -270,26 +258,20 @@ namespace ChemSolution_re_API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ElementValence",
+                name: "ElementValences",
                 columns: table => new
                 {
-                    ElementsElementId = table.Column<int>(type: "int", nullable: false),
-                    ValencesValenceId = table.Column<int>(type: "int", nullable: false)
+                    Valence = table.Column<byte>(type: "tinyint", nullable: false),
+                    ElementId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ElementValence", x => new { x.ElementsElementId, x.ValencesValenceId });
+                    table.PrimaryKey("PK_ElementValences", x => new { x.ElementId, x.Valence });
                     table.ForeignKey(
-                        name: "FK_ElementValence_Elements_ElementsElementId",
-                        column: x => x.ElementsElementId,
+                        name: "FK_ElementValences_Elements_ElementId",
+                        column: x => x.ElementId,
                         principalTable: "Elements",
                         principalColumn: "ElementId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ElementValence_Valences_ValencesValenceId",
-                        column: x => x.ValencesValenceId,
-                        principalTable: "Valences",
-                        principalColumn: "ValenceId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -297,7 +279,7 @@ namespace ChemSolution_re_API.Migrations
                 name: "AchievementUser",
                 columns: table => new
                 {
-                    AchievementsId = table.Column<int>(type: "int", nullable: false),
+                    AchievementsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UsersId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
@@ -367,20 +349,6 @@ namespace ChemSolution_re_API.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.InsertData(
-                table: "Valences",
-                column: "ValenceId",
-                values: new object[]
-                {
-                    1,
-                    2,
-                    3,
-                    4,
-                    5,
-                    6,
-                    7
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_Achievements_MaterialGroupId",
                 table: "Achievements",
@@ -410,11 +378,6 @@ namespace ChemSolution_re_API.Migrations
                 name: "IX_ElementUser_UsersId",
                 table: "ElementUser",
                 column: "UsersId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ElementValence_ValencesValenceId",
-                table: "ElementValence",
-                column: "ValencesValenceId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Materials_MaterialGroupId",
@@ -457,7 +420,7 @@ namespace ChemSolution_re_API.Migrations
                 name: "ElementUser");
 
             migrationBuilder.DropTable(
-                name: "ElementValence");
+                name: "ElementValences");
 
             migrationBuilder.DropTable(
                 name: "Orders");
@@ -476,9 +439,6 @@ namespace ChemSolution_re_API.Migrations
 
             migrationBuilder.DropTable(
                 name: "Elements");
-
-            migrationBuilder.DropTable(
-                name: "Valences");
 
             migrationBuilder.DropTable(
                 name: "Status");

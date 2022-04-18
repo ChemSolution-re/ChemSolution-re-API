@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ChemSolution_re_API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220418153928_fix4")]
-    partial class fix4
+    [Migration("20220418190126_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -100,9 +100,8 @@ namespace ChemSolution_re_API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<byte>("BlogPostCategory")
+                        .HasColumnType("tinyint");
 
                     b.Property<string>("Image")
                         .IsRequired()

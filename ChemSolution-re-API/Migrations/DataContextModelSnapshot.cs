@@ -98,9 +98,8 @@ namespace ChemSolution_re_API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<byte>("BlogPostCategory")
+                        .HasColumnType("tinyint");
 
                     b.Property<string>("Image")
                         .IsRequired()

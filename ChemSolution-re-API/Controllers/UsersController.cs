@@ -1,7 +1,6 @@
 ﻿using ChemSolution_re_API.Data;
 using ChemSolution_re_API.DTO.Request;
 using ChemSolution_re_API.Entities;
-using ChemSolution_re_API.Services.Email;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,12 +12,10 @@ namespace ChemSolution_re_API.Controllers
     public class UsersController : ControllerBase
     {
         private readonly DataContext _context;
-        private readonly IEmailService _emailService;
 
-        public UsersController(DataContext context, IEmailService emailService)
+        public UsersController(DataContext context)
         {
             _context = context;
-            _emailService = emailService;
         }
 
         // GET: api/Users
