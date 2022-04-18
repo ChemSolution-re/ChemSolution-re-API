@@ -6,9 +6,7 @@
         public DateTime DateTimeSended { set; get; } = DateTime.UtcNow;
         public string Theme { set; get; } = string.Empty;
         public string Text { set; get; } = string.Empty;
-
-        public Guid StatusId { get; set; }
-        public Status Status { get; set; } = new();
+        public Status Status { get; set; }
 
         public Guid UserId { set; get; }
         public User User { set; get; } = new();

@@ -7,7 +7,6 @@ namespace ChemSolution_re_API.Data
     {
         private readonly IConfiguration Configuration;
 
-        public DbSet<Status> Status => Set<Status>();
         public DbSet<Achievement> Achievements => Set<Achievement>();
         public DbSet<User> Users => Set<User>();
         public DbSet<BlogPost> BlogPosts => Set<BlogPost>();

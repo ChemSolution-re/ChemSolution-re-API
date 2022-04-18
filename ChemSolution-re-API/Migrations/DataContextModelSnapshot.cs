@@ -320,8 +320,8 @@ namespace ChemSolution_re_API.Migrations
                     b.Property<DateTime>("DateTimeSended")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("StatusId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<string>("Text")
                         .IsRequired()
@@ -335,8 +335,6 @@ namespace ChemSolution_re_API.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("StatusId");
 
                     b.HasIndex("UserId");
 
@@ -359,21 +357,6 @@ namespace ChemSolution_re_API.Migrations
                     b.HasIndex("MaterialId");
 
                     b.ToTable("ResearchHistorys", (string)null);
-                });
-
-            modelBuilder.Entity("ChemSolution_re_API.Entities.Status", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("StatusName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Status");
                 });
 
             modelBuilder.Entity("ChemSolution_re_API.Entities.User", b =>
@@ -536,19 +519,11 @@ namespace ChemSolution_re_API.Migrations
 
             modelBuilder.Entity("ChemSolution_re_API.Entities.Request", b =>
                 {
-                    b.HasOne("ChemSolution_re_API.Entities.Status", "Status")
-                        .WithMany("Requests")
-                        .HasForeignKey("StatusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("ChemSolution_re_API.Entities.User", "User")
                         .WithMany("Requests")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Status");
 
                     b.Navigation("User");
                 });
@@ -611,11 +586,6 @@ namespace ChemSolution_re_API.Migrations
                     b.Navigation("Achievements");
 
                     b.Navigation("Materials");
-                });
-
-            modelBuilder.Entity("ChemSolution_re_API.Entities.Status", b =>
-                {
-                    b.Navigation("Requests");
                 });
 
             modelBuilder.Entity("ChemSolution_re_API.Entities.User", b =>
