@@ -37,7 +37,7 @@ namespace ChemSolution_re_API.Entities
         public Guid CategoryId { get; set; }
         public Category Category { get; set; } = new();
 
-        public List<Valence> Valences { get; set; } = new List<Valence>();
+        public List<ElementValence> ElementValences { get; set; } = new List<ElementValence>();
         public List<User> Users { get; set; } = new List<User>();
 
         public List<Material> Materials { get; set; } = new List<Material>();

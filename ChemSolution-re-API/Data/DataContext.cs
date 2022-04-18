@@ -16,7 +16,7 @@ namespace ChemSolution_re_API.Data
         public DbSet<MaterialGroup> MaterialGroups => Set<MaterialGroup>();
         public DbSet<Request> Requests => Set<Request>();
         public DbSet<ResearchHistory> ResearchHistories => Set<ResearchHistory>();
-        public DbSet<Valence> Valences => Set<Valence>();
+        public DbSet<ElementValence> ElementValences => Set<ElementValence>();
         public DbSet<Order> Orders => Set<Order>();
         public DbSet<Category> Categories => Set<Category>();
 
@@ -33,16 +33,7 @@ namespace ChemSolution_re_API.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Valence>().HasData(
-                    new Valence { ValenceId = 1 },
-                    new Valence { ValenceId = 2 },
-                    new Valence { ValenceId = 3 },
-                    new Valence { ValenceId = 4 },
-                    new Valence { ValenceId = 5 },
-                    new Valence { ValenceId = 6 },
-                    new Valence { ValenceId = 7 }
-                );
-
+            modelBuilder.Entity<ElementValence>().HasKey(x => new { x.ElementId, x.Valence });
             //Start ResearchHistorys
             modelBuilder
                 .Entity<User>()
