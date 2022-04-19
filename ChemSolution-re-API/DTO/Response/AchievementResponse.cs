@@ -1,24 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ChemSolution_re_API.Entities;
 
-namespace ChemSolution_re_API.Entities
+namespace ChemSolution_re_API.DTO.Response
 {
-    public class Achievement
+    public class AchievementResponse
     {
         public Guid Id { get; set; }
-        [StringLength(50, MinimumLength = 5)]
         public string Heading { get; set; } = string.Empty;
-        [StringLength(250, MinimumLength = 1)]
         public string ImgAchievement { set; get; } = string.Empty;
-        [StringLength(100, MinimumLength = 1)]
         public string Description { get; set; } = string.Empty;
-        [Range(0, int.MaxValue)]
         public int MoneyReward { get; set; }
-        [Range(0, int.MaxValue)]
         public int RatingReward { get; set; }
-        [Range(0, int.MaxValue)]
         public int CountGoal { get; set; }
         public MaterialGroup MaterialGroup { get; set; }
-
-        public List<User> Users { set; get; } = new List<User>();
     }
 }

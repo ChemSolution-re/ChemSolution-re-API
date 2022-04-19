@@ -77,13 +77,13 @@ namespace ChemSolution_re_API.Controllers
             return NoContent();
         }
 
-        [HttpPut("set/status/{status}/{userId}")]
+        [HttpPut("set/status/{status}/{requestId}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> SetStatus(string status, Guid userId)
+        public async Task<IActionResult> SetStatus(string status, Guid requestId)
         {
             var request =await _context.Requests
                 .Include(r => r.User)
-                .SingleOrDefaultAsync(r => r.Id == userId);
+                .SingleOrDefaultAsync(r => r.Id == requestId);
 
             if (request != null)
             {
@@ -94,10 +94,10 @@ namespace ChemSolution_re_API.Controllers
                     await _context.SaveChangesAsync();
                     switch (tmpStatus)
                     {
-                        case Status.Ok:
+                        case Status.Rejected:
                             request.User.Honesty += 10;
                             break;
-                        case Status.Bad:
+                        case Status.Accepted:
                             if (request.User.Honesty >= 0)
                             {
                                 request.User.Honesty -= 10;

@@ -3,6 +3,7 @@ using ChemSolution_re_API.DTO;
 using ChemSolution_re_API.DTO.Request;
 using ChemSolution_re_API.DTO.Response;
 using ChemSolution_re_API.Entities;
+using ChemSolution_re_API.Response.DTO;
 using ChemSolution_re_API.Services.JWT.Models;
 
 namespace ChemSolution_re_API.MappingProfiles
@@ -19,8 +20,11 @@ namespace ChemSolution_re_API.MappingProfiles
             CreateMap<BlogPost, BlogPostDTO>();
             CreateMap<BlogPostDTO, BlogPost>();
 
-            CreateMap<MaterialGroup, MaterialGroupDTO>();
-            CreateMap<MaterialGroupDTO, MaterialGroup>();
+            CreateMap<Material, MaterialResponse>();
+            CreateMap<CreateMaterial, Material>();
+
+            CreateMap<Achievement, AchievementResponse>();
+            CreateMap<CreateAchievement, Achievement>();
         }
     }
 }

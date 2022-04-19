@@ -2,8 +2,8 @@
 {
     public enum Status
     {
-        None = 0,
-        Bad = 1,
-        Ok = 2,
+        Сonsider = 0,
+        Rejected = 1,
+        Accepted = 2,
     }
 }

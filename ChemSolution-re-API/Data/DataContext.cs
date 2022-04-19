@@ -12,12 +12,10 @@ namespace ChemSolution_re_API.Data
         public DbSet<BlogPost> BlogPosts => Set<BlogPost>();
         public DbSet<Element> Elements => Set<Element>();
         public DbSet<Material> Materials => Set<Material>();
-        public DbSet<MaterialGroup> MaterialGroups => Set<MaterialGroup>();
         public DbSet<Request> Requests => Set<Request>();
         public DbSet<ResearchHistory> ResearchHistories => Set<ResearchHistory>();
         public DbSet<ElementValence> ElementValences => Set<ElementValence>();
         public DbSet<Order> Orders => Set<Order>();
-        public DbSet<Category> Categories => Set<Category>();
 
         public DataContext(IConfiguration configuration)
         {

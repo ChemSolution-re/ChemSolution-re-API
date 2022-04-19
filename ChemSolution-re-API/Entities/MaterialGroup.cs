@@ -1,11 +1,16 @@
 ﻿namespace ChemSolution_re_API.Entities
 {
-    public class MaterialGroup
+    public enum MaterialGroup : byte
     {
-        public Guid Id { set; get; }
-        public string GroupName { set; get; } = string.Empty;
-
-        public List<Achievement> Achievements { set; get; } = new List<Achievement>();
-        public List<Material> Materials { set; get; } = new List<Material>();
+        BasicOxides = 0,
+        AcidOxides = 1,
+        AmphotericOxides = 2,
+        Meadows = 3,
+        InsolubleBases = 4,
+        AmphotericBases = 5,
+        Acids = 6,
+        Salts = 7,
+        AcidicSalts = 8,
+        BasicSalts = 9,
     }
 }

@@ -1,5 +1,7 @@
-﻿using ChemSolution_re_API.Data;
+﻿using AutoMapper;
+using ChemSolution_re_API.Data;
 using ChemSolution_re_API.DTO.Request;
+using ChemSolution_re_API.DTO.Response;
 using ChemSolution_re_API.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,22 +14,25 @@ namespace ChemSolution_re_API.Controllers
     public class AchievementsController : ControllerBase
     {
         private readonly DataContext _context;
+        private readonly IMapper _mapper;
 
-        public AchievementsController(DataContext context)
+        public AchievementsController(DataContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: api/Achievements
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Achievement>>> GetAchievements()
+        public async Task<ActionResult<IEnumerable<AchievementResponse>>> GetAchievements()
         {
-            return await _context.Achievements.ToListAsync();
+            var response = await _context.Achievements.ToListAsync();
+            return Ok(_mapper.Map<IEnumerable<AchievementResponse>>(response));
         }
 
         // GET: api/Achievements/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Achievement>> GetAchievement(Guid id)
+        public async Task<ActionResult<AchievementResponse>> GetAchievement(Guid id)
         {
             var achievement = await _context.Achievements.FindAsync(id);
 
@@ -36,7 +41,7 @@ namespace ChemSolution_re_API.Controllers
                 return NotFound();
             }
 
-            return achievement;
+            return _mapper.Map<AchievementResponse>(achievement);
         }
 
         // PUT: api/Achievements/5
@@ -61,7 +66,7 @@ namespace ChemSolution_re_API.Controllers
             achievement.MoneyReward = model.MoneyReward;
             achievement.RatingReward = model.RatingReward;
             achievement.CountGoal = model.CountGoal;
-            achievement.MaterialGroupId = model.MaterialGroupId;
+            achievement.MaterialGroup = Enum.Parse<MaterialGroup>(model.MaterialGroup);
 
             try
             {
@@ -85,12 +90,13 @@ namespace ChemSolution_re_API.Controllers
         // POST: api/Achievements
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<ActionResult<Achievement>> PostAchievement(Achievement achievement)
+        public async Task<ActionResult<Achievement>> PostAchievement(CreateAchievement model)
         {
+            var achievement = _mapper.Map<Achievement>(model);
             _context.Achievements.Add(achievement);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetAchievement", new { id = achievement.Id }, achievement);
+            return CreatedAtAction("GetAchievement", new { id = achievement.Id }, _mapper.Map<AchievementResponse>(achievement));
         }
 
         // DELETE: api/Achievements/5

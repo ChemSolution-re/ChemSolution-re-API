@@ -1,10 +1,11 @@
-﻿using ChemSolution_re_API.Data;
+﻿using AutoMapper;
+using ChemSolution_re_API.Data;
 using ChemSolution_re_API.DTO.Request;
 using ChemSolution_re_API.Entities;
+using ChemSolution_re_API.Response.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 
 namespace ChemSolution_re_API.Controllers
 {
@@ -13,35 +14,34 @@ namespace ChemSolution_re_API.Controllers
     public class MaterialsController : ControllerBase
     {
         private readonly DataContext _context;
+        private readonly IMapper _mapper;
 
-        public MaterialsController(DataContext context)
+        public MaterialsController(DataContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: api/Materials
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Material>>> GetMaterials()
+        public async Task<ActionResult<IEnumerable<MaterialResponse>>> GetMaterials()
         {
-            return await _context.Materials
-                .Include(m => m.MaterialGroup)
-                .ToListAsync();
+            var response = await _context.Materials.ToListAsync();
+            return Ok(_mapper.Map<IEnumerable<MaterialResponse>>(response));
         }
 
         // GET: api/Materials/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Material>> GetMaterial(Guid id)
+        public async Task<ActionResult<MaterialResponse>> GetMaterial(Guid id)
         {
-            var material = await _context.Materials
-                .Include(x => x.MaterialGroup)
-                .SingleOrDefaultAsync(x => x.Id == id);
+            var material = await _context.Materials.FindAsync(id);
 
             if (material == null)
             {
                 return NotFound();
             }
 
-            return material;
+            return _mapper.Map<MaterialResponse>(material);
         }
 
         // PUT: api/Materials/5
@@ -64,7 +64,7 @@ namespace ChemSolution_re_API.Controllers
             material.Name = model.Name;
             material.Info = model.Info;
             material.Formula = model.Formula;
-            material.MaterialGroupId = model.MaterialGroupId;
+            material.MaterialGroup = Enum.Parse<MaterialGroup>(model.MaterialGroup);
 
             try
             {
@@ -88,12 +88,13 @@ namespace ChemSolution_re_API.Controllers
         // POST: api/Materials
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<ActionResult<Material>> PostMaterial(Material material)
+        public async Task<ActionResult<MaterialResponse>> PostMaterial(CreateMaterial model)
         {
+            var material = _mapper.Map<Material>(model);
             _context.Materials.Add(material);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetMaterial", new { id = material.Id }, material);
+            return CreatedAtAction("GetMaterial", new { id = material.Id }, _mapper.Map<MaterialResponse>(material));
         }
 
         // DELETE: api/Materials/5
@@ -185,10 +186,10 @@ namespace ChemSolution_re_API.Controllers
 
         private async Task<List<Guid>> ComplateAchivmentsAsync(User user)
         {
-            var tmpU1 = user.Materials.GroupBy(u => u.MaterialGroupId)
+            var tmpU1 = user.Materials.GroupBy(u => u.MaterialGroup)
                 .Select(ug => (Key: ug.Key, Amount: ug.Count())).ToList();
             var tmpU2 = _context.Achievements.AsEnumerable()
-                .Select(a => (Key: a.MaterialGroupId, Amount: a.CountGoal)).ToList();
+                .Select(a => (Key: a.MaterialGroup, Amount: a.CountGoal)).ToList();
             var res = tmpU1.Intersect(tmpU2);
 
             var achievementsId = new List<Guid>();
@@ -196,7 +197,7 @@ namespace ChemSolution_re_API.Controllers
             foreach (var (Key, Amount) in res)
             {
                 var tmpAchievement =
-                    await _context.Achievements.SingleOrDefaultAsync(a => a.MaterialGroupId == Key && a.CountGoal == Amount);
+                    await _context.Achievements.SingleOrDefaultAsync(a => a.MaterialGroup == Key && a.CountGoal == Amount);
                 if (tmpAchievement != null)
                 {
                     if (!user.Achievements.Contains(tmpAchievement))

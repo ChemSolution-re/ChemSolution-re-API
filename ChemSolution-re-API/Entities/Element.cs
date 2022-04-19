@@ -33,9 +33,7 @@ namespace ChemSolution_re_API.Entities
         public int Price { get; set; }
         [Range(0, int.MaxValue)]
         public int Group { get; set; }
-
-        public Guid CategoryId { get; set; }
-        public Category Category { get; set; } = new();
+        public ElementCategory ElementCategory { get; set; }
 
         public List<ElementValence> ElementValences { get; set; } = new List<ElementValence>();
         public List<User> Users { get; set; } = new List<User>();

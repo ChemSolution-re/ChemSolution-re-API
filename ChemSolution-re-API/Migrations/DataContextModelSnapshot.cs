@@ -76,8 +76,8 @@ namespace ChemSolution_re_API.Migrations
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
-                    b.Property<Guid>("MaterialGroupId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<byte>("MaterialGroup")
+                        .HasColumnType("tinyint");
 
                     b.Property<int>("MoneyReward")
                         .HasColumnType("int");
@@ -86,8 +86,6 @@ namespace ChemSolution_re_API.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("MaterialGroupId");
 
                     b.ToTable("Achievements");
                 });
@@ -121,21 +119,6 @@ namespace ChemSolution_re_API.Migrations
                     b.ToTable("BlogPosts");
                 });
 
-            modelBuilder.Entity("ChemSolution_re_API.Entities.Category", b =>
-                {
-                    b.Property<Guid>("CategoryId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("CategoryName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("CategoryId");
-
-                    b.ToTable("Categories");
-                });
-
             modelBuilder.Entity("ChemSolution_re_API.Entities.Element", b =>
                 {
                     b.Property<int>("ElementId")
@@ -150,11 +133,11 @@ namespace ChemSolution_re_API.Migrations
                     b.Property<int>("BoilingTemperature")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("CategoryId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<double>("Electronegativity")
                         .HasColumnType("float");
+
+                    b.Property<byte>("ElementCategory")
+                        .HasColumnType("tinyint");
 
                     b.Property<int>("EnergyLevels")
                         .HasColumnType("int");
@@ -196,8 +179,6 @@ namespace ChemSolution_re_API.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ElementId");
-
-                    b.HasIndex("CategoryId");
 
                     b.ToTable("Elements");
                 });
@@ -252,8 +233,8 @@ namespace ChemSolution_re_API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("MaterialGroupId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<byte>("MaterialGroup")
+                        .HasColumnType("tinyint");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -262,24 +243,7 @@ namespace ChemSolution_re_API.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MaterialGroupId");
-
                     b.ToTable("Materials");
-                });
-
-            modelBuilder.Entity("ChemSolution_re_API.Entities.MaterialGroup", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("GroupName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("MaterialGroups");
                 });
 
             modelBuilder.Entity("ChemSolution_re_API.Entities.Order", b =>
@@ -443,28 +407,6 @@ namespace ChemSolution_re_API.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ChemSolution_re_API.Entities.Achievement", b =>
-                {
-                    b.HasOne("ChemSolution_re_API.Entities.MaterialGroup", "MaterialGroup")
-                        .WithMany("Achievements")
-                        .HasForeignKey("MaterialGroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("MaterialGroup");
-                });
-
-            modelBuilder.Entity("ChemSolution_re_API.Entities.Element", b =>
-                {
-                    b.HasOne("ChemSolution_re_API.Entities.Category", "Category")
-                        .WithMany("Elements")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Category");
-                });
-
             modelBuilder.Entity("ChemSolution_re_API.Entities.ElementMaterial", b =>
                 {
                     b.HasOne("ChemSolution_re_API.Entities.Element", "Element")
@@ -493,17 +435,6 @@ namespace ChemSolution_re_API.Migrations
                         .IsRequired();
 
                     b.Navigation("Element");
-                });
-
-            modelBuilder.Entity("ChemSolution_re_API.Entities.Material", b =>
-                {
-                    b.HasOne("ChemSolution_re_API.Entities.MaterialGroup", "MaterialGroup")
-                        .WithMany("Materials")
-                        .HasForeignKey("MaterialGroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("MaterialGroup");
                 });
 
             modelBuilder.Entity("ChemSolution_re_API.Entities.Order", b =>
@@ -562,11 +493,6 @@ namespace ChemSolution_re_API.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ChemSolution_re_API.Entities.Category", b =>
-                {
-                    b.Navigation("Elements");
-                });
-
             modelBuilder.Entity("ChemSolution_re_API.Entities.Element", b =>
                 {
                     b.Navigation("ElementMaterials");
@@ -579,13 +505,6 @@ namespace ChemSolution_re_API.Migrations
                     b.Navigation("ElementMaterials");
 
                     b.Navigation("ResearchHistories");
-                });
-
-            modelBuilder.Entity("ChemSolution_re_API.Entities.MaterialGroup", b =>
-                {
-                    b.Navigation("Achievements");
-
-                    b.Navigation("Materials");
                 });
 
             modelBuilder.Entity("ChemSolution_re_API.Entities.User", b =>

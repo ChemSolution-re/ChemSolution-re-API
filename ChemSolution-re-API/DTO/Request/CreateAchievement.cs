@@ -3,9 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ChemSolution_re_API.DTO.Request
 {
-    public class UpdateAchievement
+    public class CreateAchievement
     {
-        public Guid Id { get; set; }
         [StringLength(50, MinimumLength = 5)]
         public string Heading { get; set; } = string.Empty;
         [StringLength(250, MinimumLength = 1)]
