@@ -1,9 +1,9 @@
 ﻿using ChemSolution_re_API.Entities;
 using System.ComponentModel.DataAnnotations;
 
-namespace ChemSolution_re_API.DTO
+namespace ChemSolution_re_API.DTO.Request
 {
-    public class BlogPostDTO
+    public class UpdateBlogPost
     {
         public Guid BlogPostId { set; get; }
         public string Title { set; get; } = string.Empty;

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ChemSolution_re_API.Data;
-using ChemSolution_re_API.DTO;
+using ChemSolution_re_API.DTO.Request;
+using ChemSolution_re_API.DTO.Response;
 using ChemSolution_re_API.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -23,15 +24,15 @@ namespace ChemSolution_re_API.Controllers
 
         // GET: api/BlogPosts
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<BlogPostDTO>>> GetBlogPosts()
+        public async Task<ActionResult<IEnumerable<BlogPostResponse>>> GetBlogPosts()
         {
             var response = await _context.BlogPosts.ToListAsync();
-            return Ok(_mapper.Map<IEnumerable<BlogPostDTO>>(response));
+            return Ok(_mapper.Map<IEnumerable<BlogPostResponse>>(response));
         }
 
         // GET: api/BlogPosts/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<BlogPostDTO>> GetBlogPost(Guid id)
+        public async Task<ActionResult<BlogPostResponse>> GetBlogPost(Guid id)
         {
             var blogPost = await _context.BlogPosts.FindAsync(id);
 
@@ -40,15 +41,15 @@ namespace ChemSolution_re_API.Controllers
                 return NotFound();
             }
 
-            return _mapper.Map<BlogPostDTO>(blogPost);
+            return _mapper.Map<BlogPostResponse>(blogPost);
         }
 
         // PUT: api/BlogPosts/5
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> PutBlogPost(Guid id, BlogPostDTO blogPostDTO)
+        public async Task<IActionResult> PutBlogPost(Guid id, UpdateBlogPost model)
         {
-            if (id != blogPostDTO.BlogPostId)
+            if (id != model.BlogPostId)
             {
                 return BadRequest();
             }
@@ -59,11 +60,11 @@ namespace ChemSolution_re_API.Controllers
                 return NotFound();
             }
 
-            blogPost.Title = blogPostDTO.Title;
-            blogPost.BlogPostCategory = Enum.Parse<BlogPostCategory>(blogPostDTO.BlogPostCategory);
-            blogPost.Information = blogPostDTO.Information;
-            blogPost.Image = blogPostDTO.Image;
-            blogPost.IsLocked = blogPostDTO.IsLocked;
+            blogPost.Title = model.Title;
+            blogPost.BlogPostCategory = Enum.Parse<BlogPostCategory>(model.BlogPostCategory);
+            blogPost.Information = model.Information;
+            blogPost.Image = model.Image;
+            blogPost.IsLocked = model.IsLocked;
 
             try
             {
@@ -87,16 +88,16 @@ namespace ChemSolution_re_API.Controllers
         // POST: api/BlogPosts
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult<BlogPostDTO>> PostBlogPost(BlogPostDTO blogPostDTO)
+        public async Task<ActionResult<BlogPostResponse>> PostBlogPost(CreateBlogPost model)
         {
-            var blogPost = _mapper.Map<BlogPost>(blogPostDTO);
+            var blogPost = _mapper.Map<BlogPost>(model);
             _context.BlogPosts.Add(blogPost);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction(
                 nameof(GetBlogPosts),
                 new { id = blogPost.BlogPostId },
-                _mapper.Map<BlogPostDTO>(blogPost));
+                _mapper.Map<BlogPostResponse>(blogPost));
         }
 
         // DELETE: api/BlogPosts/5

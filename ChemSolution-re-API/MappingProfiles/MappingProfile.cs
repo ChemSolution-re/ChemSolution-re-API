@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using ChemSolution_re_API.DTO;
 using ChemSolution_re_API.DTO.Request;
 using ChemSolution_re_API.DTO.Response;
 using ChemSolution_re_API.Entities;
@@ -17,8 +16,8 @@ namespace ChemSolution_re_API.MappingProfiles
             CreateMap<User, AuthorizeResponse>()
                 .ForMember(x => x.UserId, opts => opts.MapFrom(s => s.Id));
 
-            CreateMap<BlogPost, BlogPostDTO>();
-            CreateMap<BlogPostDTO, BlogPost>();
+            CreateMap<BlogPost, BlogPostResponse>();
+            CreateMap<CreateBlogPost, BlogPost>();
 
             CreateMap<Material, MaterialResponse>();
             CreateMap<CreateMaterial, Material>();
