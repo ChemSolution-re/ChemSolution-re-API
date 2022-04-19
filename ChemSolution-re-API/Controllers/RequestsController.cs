@@ -28,7 +28,7 @@ namespace ChemSolution_re_API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Request>> GetRequest(Guid id)
         {
-            var request = await _context.Requests.SingleOrDefaultAsync(x => x.Id == id);
+            var request = await _context.Requests.FindAsync(id);
 
             if (request == null)
             {
@@ -47,7 +47,7 @@ namespace ChemSolution_re_API.Controllers
                 return BadRequest();
             }
 
-            var request = await _context.Requests.SingleOrDefaultAsync(x => x.Id == id);
+            var request = await _context.Requests.FindAsync(id);
             if(request == null)
             {
                 return NotFound();
