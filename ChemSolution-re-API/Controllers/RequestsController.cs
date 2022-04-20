@@ -27,7 +27,7 @@ namespace ChemSolution_re_API.Controllers
         public async Task<ActionResult<IEnumerable<RequestResponse>>> GetRequests()
         {
             var response = await _context.Requests.ToListAsync();
-            return Ok(_mapper.Map< IEnumerable<RequestResponse>>(response));
+            return Ok(_mapper.Map<IEnumerable<RequestResponse>>(response));
         }
 
         [HttpGet("{id}")]

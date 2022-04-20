@@ -2,7 +2,6 @@
 using ChemSolution_re_API.DTO.Request;
 using ChemSolution_re_API.DTO.Response;
 using ChemSolution_re_API.Entities;
-using ChemSolution_re_API.Response.DTO;
 using ChemSolution_re_API.Services.JWT.Models;
 
 namespace ChemSolution_re_API.MappingProfiles
@@ -17,6 +16,9 @@ namespace ChemSolution_re_API.MappingProfiles
             CreateMap<User, AuthorizeResponse>()
                 .ForMember(x => x.UserId, opts => opts.MapFrom(s => s.Id));
 
+            CreateMap<ElementValence, ElementValenceResponse>();
+            CreateMap<ValenceRequest, ElementValence>();
+
             CreateMap<BlogPost, BlogPostResponse>();
             CreateMap<CreateBlogPost, BlogPost>();
 
@@ -28,6 +30,10 @@ namespace ChemSolution_re_API.MappingProfiles
 
             CreateMap<Request, RequestResponse>();
             CreateMap<CreateRequest, Request>();
+
+            CreateMap<Element, ElementResponse>();
+            CreateMap<CreateElement, Element>();
+            CreateMap<UpdateElement, Element>();
         }
     }
 }

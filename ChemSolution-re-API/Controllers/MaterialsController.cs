@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using ChemSolution_re_API.Data;
 using ChemSolution_re_API.DTO.Request;
+using ChemSolution_re_API.DTO.Response;
 using ChemSolution_re_API.Entities;
-using ChemSolution_re_API.Response.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

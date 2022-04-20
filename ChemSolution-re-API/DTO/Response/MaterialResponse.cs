@@ -1,6 +1,6 @@
 ﻿using ChemSolution_re_API.Entities;
 
-namespace ChemSolution_re_API.Response.DTO
+namespace ChemSolution_re_API.DTO.Response
 {
     public class MaterialResponse
     {
