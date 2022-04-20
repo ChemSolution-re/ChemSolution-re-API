@@ -10,5 +10,7 @@ namespace ChemSolution_re_API.DTO.Response
         public string Name { get; set; } = string.Empty;
         public string Info { get; set; } = string.Empty;
         public MaterialGroup MaterialGroup { set; get; }
+
+        public List<ElementMaterialResponse> ElementMaterials { set; get; } = new List<ElementMaterialResponse>();
     }
 }

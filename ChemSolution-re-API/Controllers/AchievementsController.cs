@@ -60,13 +60,7 @@ namespace ChemSolution_re_API.Controllers
                 return NotFound();
             }
 
-            achievement.Heading = model.Heading;
-            achievement.ImgAchievement = model.ImgAchievement;
-            achievement.Description = model.Description;
-            achievement.MoneyReward = model.MoneyReward;
-            achievement.RatingReward = model.RatingReward;
-            achievement.CountGoal = model.CountGoal;
-            achievement.MaterialGroup = Enum.Parse<MaterialGroup>(model.MaterialGroup);
+            _mapper.Map(model, achievement);
 
             try
             {

@@ -26,7 +26,9 @@ namespace ChemSolution_re_API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MaterialResponse>>> GetMaterials()
         {
-            var response = await _context.Materials.ToListAsync();
+            var response = await _context.Materials
+                .Include(x => x.ElementMaterials)
+                .ToListAsync();
             return Ok(_mapper.Map<IEnumerable<MaterialResponse>>(response));
         }
 
@@ -34,7 +36,9 @@ namespace ChemSolution_re_API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<MaterialResponse>> GetMaterial(Guid id)
         {
-            var material = await _context.Materials.FindAsync(id);
+            var material = await _context.Materials
+                .Include(x => x.ElementMaterials)
+                .SingleOrDefaultAsync(x => x.Id == id);
 
             if (material == null)
             {
@@ -54,17 +58,16 @@ namespace ChemSolution_re_API.Controllers
                 return BadRequest();
             }
 
-            var material = await _context.Materials.FindAsync(id);
+            var material = await _context.Materials
+                .Include(x => x.ElementMaterials)
+                .SingleOrDefaultAsync(x => x.Id == id);
+
             if (material == null)
             {
                 return NotFound();
             }
 
-            material.Image = model.Image;
-            material.Name = model.Name;
-            material.Info = model.Info;
-            material.Formula = model.Formula;
-            material.MaterialGroup = Enum.Parse<MaterialGroup>(model.MaterialGroup);
+            _mapper.Map(model, material);
 
             try
             {
@@ -91,7 +94,13 @@ namespace ChemSolution_re_API.Controllers
         public async Task<ActionResult<MaterialResponse>> PostMaterial(CreateMaterial model)
         {
             var material = _mapper.Map<Material>(model);
+
+            var elementMaterials = material.ElementMaterials;
+            material.ElementMaterials = new();
+
             _context.Materials.Add(material);
+            await _context.SaveChangesAsync();
+            await _context.ElementMaterials.AddAsync(new ElementMaterial { ElementId = 1, Amount = 2, MaterialId = material.Id});
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetMaterial", new { id = material.Id }, _mapper.Map<MaterialResponse>(material));

@@ -1,4 +1,5 @@
-﻿using ChemSolution_re_API.Entities;
+﻿using ChemSolution_re_API.DTO.Response;
+using ChemSolution_re_API.Entities;
 using System.ComponentModel.DataAnnotations;
 
 namespace ChemSolution_re_API.DTO.Request
@@ -16,5 +17,7 @@ namespace ChemSolution_re_API.DTO.Request
         [Required]
         [EnumDataType(typeof(MaterialGroup))]
         public string MaterialGroup { set; get; } = string.Empty;
+
+        public List<ElementMaterialResponse> ElementMaterials { set; get; } = new List<ElementMaterialResponse>();
     }
 }

@@ -60,11 +60,7 @@ namespace ChemSolution_re_API.Controllers
                 return NotFound();
             }
 
-            blogPost.Title = model.Title;
-            blogPost.BlogPostCategory = Enum.Parse<BlogPostCategory>(model.BlogPostCategory);
-            blogPost.Information = model.Information;
-            blogPost.Image = model.Image;
-            blogPost.IsLocked = model.IsLocked;
+            _mapper.Map(model, blogPost);
 
             try
             {

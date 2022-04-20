@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ChemSolution_re_API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220419100513_init")]
+    [Migration("20220420190353_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

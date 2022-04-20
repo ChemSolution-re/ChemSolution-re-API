@@ -16,6 +16,7 @@ namespace ChemSolution_re_API.Data
         public DbSet<ResearchHistory> ResearchHistories => Set<ResearchHistory>();
         public DbSet<ElementValence> ElementValences => Set<ElementValence>();
         public DbSet<Order> Orders => Set<Order>();
+        public DbSet<ElementMaterial> ElementMaterials => Set<ElementMaterial>();
 
         public DataContext(IConfiguration configuration)
         {
