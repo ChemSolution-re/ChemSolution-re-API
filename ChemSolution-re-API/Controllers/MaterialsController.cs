@@ -95,12 +95,7 @@ namespace ChemSolution_re_API.Controllers
         {
             var material = _mapper.Map<Material>(model);
 
-            var elementMaterials = material.ElementMaterials;
-            material.ElementMaterials = new();
-
             _context.Materials.Add(material);
-            await _context.SaveChangesAsync();
-            await _context.ElementMaterials.AddAsync(new ElementMaterial { ElementId = 1, Amount = 2, MaterialId = material.Id });
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetMaterial", new { id = material.Id }, _mapper.Map<MaterialResponse>(material));
@@ -184,10 +179,10 @@ namespace ChemSolution_re_API.Controllers
         private bool IsEqualMaterials(Material material, SearchMaterialRequest searchRequest)
         {
             var tmpU1 = material.ElementMaterials
-                .Select(e => (ElementId: e.ElementId, Amount: e.Amount))
+                .Select(e => (e.ElementId, e.Amount))
                 .ToList();
             var tmpU2 = searchRequest.Value
-                .Select(rm => (ElementId: rm.ElementId, Amount: rm.Amount))
+                .Select(rm => (rm.ElementId, rm.Amount))
                 .ToList();
 
             return (tmpU1.Count == tmpU2.Count) ? !tmpU1.Except(tmpU2).Any() : false;

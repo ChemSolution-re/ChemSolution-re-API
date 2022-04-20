@@ -18,6 +18,6 @@ namespace ChemSolution_re_API.DTO.Request
         [EnumDataType(typeof(MaterialGroup))]
         public string MaterialGroup { set; get; } = string.Empty;
 
-        public List<ElementMaterialResponse> ElementMaterials { set; get; } = new List<ElementMaterialResponse>();
+        public List<ElementMaterialRequest> ElementMaterials { set; get; } = new List<ElementMaterialRequest>();
     }
 }

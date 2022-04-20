@@ -16,9 +16,6 @@ namespace ChemSolution_re_API.MappingProfiles
             CreateMap<User, AuthorizeResponse>()
                 .ForMember(x => x.UserId, opts => opts.MapFrom(s => s.Id));
 
-            CreateMap<ElementValence, ElementValenceResponse>();
-            CreateMap<ValenceRequest, ElementValence>();
-
             CreateMap<BlogPost, BlogPostResponse>();
             CreateMap<CreateBlogPost, BlogPost>();
             CreateMap<UpdateBlogPost, BlogPost>();
@@ -41,6 +38,9 @@ namespace ChemSolution_re_API.MappingProfiles
 
             CreateMap<ElementMaterial, ElementMaterialResponse>();
             CreateMap<ElementMaterialRequest, ElementMaterial>();
+
+            CreateMap<ElementValence, ElementValenceResponse>();
+            CreateMap<ValenceRequest, ElementValence>();
         }
     }
 }
