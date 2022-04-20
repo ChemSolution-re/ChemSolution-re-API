@@ -1,5 +1,7 @@
-﻿using ChemSolution_re_API.Data;
+﻿using AutoMapper;
+using ChemSolution_re_API.Data;
 using ChemSolution_re_API.DTO.Request;
+using ChemSolution_re_API.DTO.Response;
 using ChemSolution_re_API.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,52 +14,37 @@ namespace ChemSolution_re_API.Controllers
     public class UsersController : ControllerBase
     {
         private readonly DataContext _context;
+        private readonly IMapper _mapper;
 
-        public UsersController(DataContext context)
+        public UsersController(DataContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: api/Users
         [HttpGet("all")]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<UserResponse>>> GetUsers()
         {
-            var response = await _context.Users
-                .Include(p => p.BlogPosts)
-                .Include(p => p.Requests)
-                .Include(p => p.ResearchHistorys)
-                .Include(p => p.Elements)
-                .Include(p => p.Achievements)
-                .ToListAsync();
-
-            response.ForEach(p => p.PasswordHash = string.Empty);
-
-            return response;
+            var response = await _context.Users.ToListAsync();
+            return Ok(_mapper.Map<IEnumerable<UserResponse>>(response));
         }
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> GetUser()
+        public async Task<ActionResult<UserResponse>> GetUser()
         {
             var id = HttpContext.User.Identity?.Name;
 
-            var user = await _context.Users
-                .Include(p => p.BlogPosts)
-                .Include(p => p.Requests)
-                .Include(p => p.ResearchHistorys)
-                .Include(p => p.Elements)
-                .Include(p => p.Achievements)
-                .FirstAsync(u => u.Id.ToString() == id);
-
-            user.PasswordHash = string.Empty;
+            var user = await _context.Users.FirstAsync(u => u.Id.ToString() == id);
 
             if (user == null)
             {
                 return NotFound();
             }
 
-            return Ok(user);
+            return _mapper.Map<UserResponse>(user);
         }
 
         // PUT: api/Users/5

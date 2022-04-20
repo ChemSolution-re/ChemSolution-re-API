@@ -13,6 +13,7 @@ namespace ChemSolution_re_API.MappingProfiles
         {
             CreateMap<RegisterRequest, User>();
             CreateMap<User, JwtUser>();
+            CreateMap<User, UserResponse>();
             CreateMap<User, AuthorizeResponse>()
                 .ForMember(x => x.UserId, opts => opts.MapFrom(s => s.Id));
 
@@ -24,6 +25,9 @@ namespace ChemSolution_re_API.MappingProfiles
 
             CreateMap<Achievement, AchievementResponse>();
             CreateMap<CreateAchievement, Achievement>();
+
+            CreateMap<Request, RequestResponse>();
+            CreateMap<CreateRequest, Request>();
         }
     }
 }

@@ -164,7 +164,7 @@ namespace ChemSolution_re_API.Controllers
                 {
                     ResultMaterialId = material.Id,
                     IsNew = true,
-                    NewAchievementsId = new List<int>(),
+                    NewAchievementsId = new List<Guid>(),
                     Formula = material.Formula,
                     Info = material.Info
                 });

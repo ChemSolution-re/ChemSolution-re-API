@@ -4,6 +4,8 @@ using ChemSolution_re_API.Data;
 using ChemSolution_re_API.Entities;
 using Microsoft.AspNetCore.Authorization;
 using ChemSolution_re_API.DTO.Request;
+using AutoMapper;
+using ChemSolution_re_API.DTO.Response;
 
 namespace ChemSolution_re_API.Controllers
 {
@@ -12,21 +14,24 @@ namespace ChemSolution_re_API.Controllers
     public class RequestsController : ControllerBase
     {
         private readonly DataContext _context;
+        private readonly IMapper _mapper;
 
-        public RequestsController(DataContext context)
+        public RequestsController(DataContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: api/Requests
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Request>>> GetRequests()
+        public async Task<ActionResult<IEnumerable<RequestResponse>>> GetRequests()
         {
-            return await _context.Requests.ToListAsync();
+            var response = await _context.Requests.ToListAsync();
+            return Ok(_mapper.Map< IEnumerable<RequestResponse>>(response));
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Request>> GetRequest(Guid id)
+        public async Task<ActionResult<RequestResponse>> GetRequest(Guid id)
         {
             var request = await _context.Requests.FindAsync(id);
 
@@ -35,7 +40,7 @@ namespace ChemSolution_re_API.Controllers
                 return NotFound();
             }
 
-            return request;
+            return _mapper.Map<RequestResponse>(request);
         }
 
         [Authorize(Roles = "Admin")]
@@ -53,7 +58,6 @@ namespace ChemSolution_re_API.Controllers
                 return NotFound();
             }
             
-            request.DateTimeSended = model.DateTimeSended;
             request.Theme = model.Theme;
             request.Text = model.Text;
             request.Status = Enum.Parse<Status>(model.Status);
@@ -85,40 +89,39 @@ namespace ChemSolution_re_API.Controllers
                 .Include(r => r.User)
                 .SingleOrDefaultAsync(r => r.Id == requestId);
 
-            if (request != null)
-            {
-                try
-                {
-                    var tmpStatus = Enum.Parse<Status>(status);
-                    request.Status = tmpStatus;
-                    await _context.SaveChangesAsync();
-                    switch (tmpStatus)
-                    {
-                        case Status.Rejected:
-                            request.User.Honesty += 10;
-                            break;
-                        case Status.Accepted:
-                            if (request.User.Honesty >= 0)
-                            {
-                                request.User.Honesty -= 10;
-                            }
-                            break;
-                    }
+            if(request == null) { return NotFound(); }
 
-                    return Ok();
-                }
-                catch (Exception ex)
+            try
+            {
+                var tmpStatus = Enum.Parse<Status>(status);
+                request.Status = tmpStatus;
+                await _context.SaveChangesAsync();
+
+                switch (tmpStatus)
                 {
-                    return BadRequest(ex.Message);
+                    case Status.Accepted:
+                        request.User.Honesty += 10;
+                        break;
+                    case Status.Rejected:
+                        if (request.User.Honesty >= 0)
+                        {
+                            request.User.Honesty -= 10;
+                        }
+                        break;
                 }
+
+                return Ok();
             }
-            return Problem();
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // POST: api/Requests
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> PostRequest(Request request)
+        public async Task<IActionResult> PostRequest(CreateRequest model)
         {
             var user = await _context.Users.SingleOrDefaultAsync(x => x.Id.ToString() == User.Identity!.Name);
             if (user == null)
@@ -126,6 +129,7 @@ namespace ChemSolution_re_API.Controllers
                 return NotFound("User not found");
             }
 
+            var request = _mapper.Map<Request>(model);
             request.UserId = user.Id;
 
             await _context.Requests.AddAsync(request);
