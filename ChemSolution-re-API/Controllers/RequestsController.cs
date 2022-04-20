@@ -24,6 +24,7 @@ namespace ChemSolution_re_API.Controllers
         }
 
         // GET: api/Requests
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<RequestResponse>>> GetRequests()
         {
@@ -31,6 +32,7 @@ namespace ChemSolution_re_API.Controllers
             return Ok(_mapper.Map<IEnumerable<RequestResponse>>(response));
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("{id}")]
         public async Task<ActionResult<RequestResponse>> GetRequest(Guid id)
         {
@@ -44,43 +46,43 @@ namespace ChemSolution_re_API.Controllers
             return _mapper.Map<RequestResponse>(request);
         }
 
-        [Authorize(Roles = "Admin")]
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutRequest(Guid id, UpdateRequest model)
-        {
-            if (id != model.Id)
-            {
-                return BadRequest();
-            }
+        //[Authorize(Roles = "Admin")]
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> PutRequest(Guid id, UpdateRequest model)
+        //{
+        //    if (id != model.Id)
+        //    {
+        //        return BadRequest();
+        //    }
 
-            var request = await _context.Requests.FindAsync(id);
-            if (request == null)
-            {
-                return NotFound();
-            }
+        //    var request = await _context.Requests.FindAsync(id);
+        //    if (request == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            _mapper.Map(model, request);
+        //    _mapper.Map(model, request);
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!RequestExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+        //    try
+        //    {
+        //        await _context.SaveChangesAsync();
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        if (!RequestExists(id))
+        //        {
+        //            return NotFound();
+        //        }
+        //        else
+        //        {
+        //            throw;
+        //        }
+        //    }
 
-            return NoContent();
-        }
+        //    return NoContent();
+        //}
 
-        [HttpPut("set/status/{status}/{requestId}")]
+        [HttpPut("set/status/{requestId}/{status}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> SetStatus(string status, Guid requestId)
         {
@@ -93,7 +95,6 @@ namespace ChemSolution_re_API.Controllers
             try
             {
                 request.Status = Enum.Parse<Status>(status);
-                await _context.SaveChangesAsync();
 
                 switch (request.Status)
                 {
@@ -108,6 +109,8 @@ namespace ChemSolution_re_API.Controllers
                         break;
                 }
 
+                await _context.SaveChangesAsync();
+
                 return Ok();
             }
             catch (Exception ex)
@@ -117,7 +120,7 @@ namespace ChemSolution_re_API.Controllers
         }
 
         // POST: api/Requests
-        [Authorize]
+        [Authorize(Roles = "User")]
         [HttpPost]
         public async Task<IActionResult> PostRequest(CreateRequest model)
         {
@@ -153,9 +156,9 @@ namespace ChemSolution_re_API.Controllers
             return NoContent();
         }
 
-        private bool RequestExists(Guid id)
-        {
-            return _context.Requests.Any(e => e.Id == id);
-        }
+        //private bool RequestExists(Guid id)
+        //{
+        //    return _context.Requests.Any(e => e.Id == id);
+        //}
     }
 }
