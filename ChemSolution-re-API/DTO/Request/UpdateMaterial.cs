@@ -1,5 +1,5 @@
 ﻿using ChemSolution_re_API.DTO.Response;
-using ChemSolution_re_API.Entities;
+using ChemSolution_re_API.Entities.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace ChemSolution_re_API.DTO.Request

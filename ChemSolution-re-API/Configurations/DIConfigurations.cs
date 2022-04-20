@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using ChemSolution_re_API.Data;
+﻿using ChemSolution_re_API.Data;
 using ChemSolution_re_API.Entities;
 using ChemSolution_re_API.Services.Email;
 using ChemSolution_re_API.Services.JWT;
@@ -9,7 +8,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Converters;
-using System.Text.Json.Serialization;
 
 namespace ChemSolution_re_API.Configurations
 {

@@ -100,7 +100,7 @@ namespace ChemSolution_re_API.Controllers
 
             _context.Materials.Add(material);
             await _context.SaveChangesAsync();
-            await _context.ElementMaterials.AddAsync(new ElementMaterial { ElementId = 1, Amount = 2, MaterialId = material.Id});
+            await _context.ElementMaterials.AddAsync(new ElementMaterial { ElementId = 1, Amount = 2, MaterialId = material.Id });
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetMaterial", new { id = material.Id }, _mapper.Map<MaterialResponse>(material));

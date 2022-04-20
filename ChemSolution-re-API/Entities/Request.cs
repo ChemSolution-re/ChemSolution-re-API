@@ -1,4 +1,6 @@
-﻿namespace ChemSolution_re_API.Entities
+﻿using ChemSolution_re_API.Entities.Enums;
+
+namespace ChemSolution_re_API.Entities
 {
     public class Request
     {
@@ -9,6 +11,6 @@
         public Status Status { get; set; } = Status.Сonsider;
 
         public Guid UserId { set; get; }
-        public User User { set; get; } = new();
+        public User? User { set; get; }
     }
 }

@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
 using ChemSolution_re_API.Data;
-using ChemSolution_re_API.Entities;
-using Microsoft.AspNetCore.Authorization;
 using ChemSolution_re_API.DTO.Request;
-using AutoMapper;
 using ChemSolution_re_API.DTO.Response;
+using ChemSolution_re_API.Entities;
+using ChemSolution_re_API.Entities.Enums;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ChemSolution_re_API.Controllers
 {
@@ -53,14 +54,12 @@ namespace ChemSolution_re_API.Controllers
             }
 
             var request = await _context.Requests.FindAsync(id);
-            if(request == null)
+            if (request == null)
             {
                 return NotFound();
             }
-            
-            request.Theme = model.Theme;
-            request.Text = model.Text;
-            request.Status = Enum.Parse<Status>(model.Status);
+
+            _mapper.Map(model, request);
 
             try
             {
@@ -85,25 +84,24 @@ namespace ChemSolution_re_API.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> SetStatus(string status, Guid requestId)
         {
-            var request =await _context.Requests
+            var request = await _context.Requests
                 .Include(r => r.User)
                 .SingleOrDefaultAsync(r => r.Id == requestId);
 
-            if(request == null) { return NotFound(); }
+            if (request == null) { return NotFound(); }
 
             try
             {
-                var tmpStatus = Enum.Parse<Status>(status);
-                request.Status = tmpStatus;
+                request.Status = Enum.Parse<Status>(status);
                 await _context.SaveChangesAsync();
 
-                switch (tmpStatus)
+                switch (request.Status)
                 {
                     case Status.Accepted:
-                        request.User.Honesty += 10;
+                        request.User!.Honesty += 10;
                         break;
                     case Status.Rejected:
-                        if (request.User.Honesty >= 0)
+                        if (request.User!.Honesty >= 0)
                         {
                             request.User.Honesty -= 10;
                         }

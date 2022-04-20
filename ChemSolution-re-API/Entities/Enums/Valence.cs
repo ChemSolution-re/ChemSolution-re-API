@@ -1,4 +1,4 @@
-﻿namespace ChemSolution_re_API.Entities
+﻿namespace ChemSolution_re_API.Entities.Enums
 {
     public enum Valence : byte
     {

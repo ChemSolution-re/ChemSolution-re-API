@@ -55,7 +55,7 @@ namespace ChemSolution_re_API.Controllers
             }
 
             var achievement = await _context.Achievements.FindAsync(id);
-            if(achievement == null)
+            if (achievement == null)
             {
                 return NotFound();
             }

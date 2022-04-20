@@ -1,4 +1,4 @@
-﻿using ChemSolution_re_API.Entities;
+﻿using ChemSolution_re_API.Entities.Enums;
 
 namespace ChemSolution_re_API.DTO.Response
 {

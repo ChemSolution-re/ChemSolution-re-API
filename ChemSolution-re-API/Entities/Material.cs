@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ChemSolution_re_API.Entities.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace ChemSolution_re_API.Entities
 {

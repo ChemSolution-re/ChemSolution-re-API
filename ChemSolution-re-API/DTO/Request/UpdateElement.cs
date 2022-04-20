@@ -1,6 +1,5 @@
-﻿using ChemSolution_re_API.Entities;
+﻿using ChemSolution_re_API.Entities.Enums;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ChemSolution_re_API.DTO.Request
 {

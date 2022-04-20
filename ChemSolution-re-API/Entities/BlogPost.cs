@@ -1,4 +1,6 @@
-﻿namespace ChemSolution_re_API.Entities
+﻿using ChemSolution_re_API.Entities.Enums;
+
+namespace ChemSolution_re_API.Entities
 {
     public class BlogPost
     {
