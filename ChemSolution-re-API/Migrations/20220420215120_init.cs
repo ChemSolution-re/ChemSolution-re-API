@@ -226,7 +226,7 @@ namespace ChemSolution_re_API.Migrations
                 {
                     OrderId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CoinsAmount = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     Data = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Signature = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -238,8 +238,7 @@ namespace ChemSolution_re_API.Migrations
                         name: "FK_Orders_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
