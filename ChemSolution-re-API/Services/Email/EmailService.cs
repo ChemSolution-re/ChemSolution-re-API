@@ -1,5 +1,7 @@
 ﻿using MailKit.Net.Smtp;
+using MailKit.Security;
 using MimeKit;
+using MimeKit.Text;
 
 namespace ChemSolution_re_API.Services.Email
 {
@@ -8,22 +10,21 @@ namespace ChemSolution_re_API.Services.Email
         private readonly string _serviceEmail = "fa3af6e8a3a1e8";
         private readonly string _serviceEmailPassword = "fabcf2955ab190";
 
-        public async Task SendEmailAsync(string email, string subject, string message)
+        public async Task SendEmailAsync(string to, string subject, string html, string? from = null)
         {
-            var emailMessage = new MimeMessage();
-            emailMessage.From.Add(new MailboxAddress("ChemSolution", _serviceEmail));
-            emailMessage.To.Add(new MailboxAddress("", email));
-            emailMessage.Subject = subject;
-            emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html)
-            {
-                Text = message
-            };
+            // create message
+            var email = new MimeMessage();
+            email.From.Add(MailboxAddress.Parse(from ?? "ChemSolution-re-API"));
+            email.To.Add(MailboxAddress.Parse(to));
+            email.Subject = subject;
+            email.Body = new TextPart(TextFormat.Html) { Text = html };
 
-            using var client = new SmtpClient();
-            await client.ConnectAsync("smtp.mailtrap.io", 465, false);
-            await client.AuthenticateAsync(_serviceEmail, password: _serviceEmailPassword);
-            await client.SendAsync(emailMessage);
-            await client.DisconnectAsync(true);
+            // send email
+            using var smtp = new SmtpClient();
+            await smtp.ConnectAsync("smtp.mailtrap.io", 587, SecureSocketOptions.StartTls);
+            await smtp.AuthenticateAsync(_serviceEmail, _serviceEmailPassword);
+            await smtp.SendAsync(email);
+            await smtp.DisconnectAsync(true);
         }
     }
 }

@@ -20,6 +20,14 @@ namespace ChemSolution_re_API.Entities
         public int Honesty { set; get; } = 100;
         public Role Role { set; get; } = Role.User;
 
+        public string VerificationToken { get; set; } = string.Empty;
+        public DateTime? Verified { get; set; }
+        public bool IsVerified => Verified.HasValue || PasswordReset.HasValue;
+
+        public string ResetToken { get; set; } = string.Empty;
+        public DateTime? ResetTokenExpires { get; set; }
+        public DateTime? PasswordReset { get; set; }
+
         public List<BlogPost> BlogPosts { set; get; } = new List<BlogPost>();
         public List<Request> Requests { set; get; } = new List<Request>();
         public List<Achievement> Achievements { set; get; } = new List<Achievement>();

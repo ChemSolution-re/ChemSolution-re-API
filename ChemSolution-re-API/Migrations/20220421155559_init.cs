@@ -98,7 +98,12 @@ namespace ChemSolution_re_API.Migrations
                     Balance = table.Column<int>(type: "int", nullable: false),
                     Rating = table.Column<int>(type: "int", nullable: false),
                     Honesty = table.Column<int>(type: "int", nullable: false),
-                    Role = table.Column<byte>(type: "tinyint", nullable: false)
+                    Role = table.Column<byte>(type: "tinyint", nullable: false),
+                    VerificationToken = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Verified = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ResetToken = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ResetTokenExpires = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    PasswordReset = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {

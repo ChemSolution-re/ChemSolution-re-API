@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ChemSolution_re_API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220420215120_init")]
+    [Migration("20220421155559_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -344,8 +344,18 @@ namespace ChemSolution_re_API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime?>("PasswordReset")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("Rating")
                         .HasColumnType("int");
+
+                    b.Property<string>("ResetToken")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ResetTokenExpires")
+                        .HasColumnType("datetime2");
 
                     b.Property<byte>("Role")
                         .HasColumnType("tinyint");
@@ -358,6 +368,13 @@ namespace ChemSolution_re_API.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("VerificationToken")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("Verified")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 

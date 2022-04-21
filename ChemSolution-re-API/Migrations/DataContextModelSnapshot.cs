@@ -342,8 +342,18 @@ namespace ChemSolution_re_API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime?>("PasswordReset")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("Rating")
                         .HasColumnType("int");
+
+                    b.Property<string>("ResetToken")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ResetTokenExpires")
+                        .HasColumnType("datetime2");
 
                     b.Property<byte>("Role")
                         .HasColumnType("tinyint");
@@ -356,6 +366,13 @@ namespace ChemSolution_re_API.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("VerificationToken")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("Verified")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
