@@ -32,6 +32,15 @@ namespace ChemSolution_re_API.Controllers
             return Ok(_mapper.Map<IEnumerable<RequestResponse>>(response));
         }
 
+        // GET: api/Requests
+        [Authorize(Roles = "User")]
+        [HttpGet("OwnRequests")]
+        public async Task<ActionResult<IEnumerable<RequestResponse>>> GetOwnRequests()
+        {
+            var response = await _context.Requests.Where(x => x.UserId.ToString() == User.Identity!.Name).ToListAsync();
+            return Ok(_mapper.Map<IEnumerable<RequestResponse>>(response));
+        }
+
         [Authorize(Roles = "Admin")]
         [HttpGet("{id}")]
         public async Task<ActionResult<RequestResponse>> GetRequest(Guid id)
@@ -45,42 +54,6 @@ namespace ChemSolution_re_API.Controllers
 
             return _mapper.Map<RequestResponse>(request);
         }
-
-        //[Authorize(Roles = "Admin")]
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> PutRequest(Guid id, UpdateRequest model)
-        //{
-        //    if (id != model.Id)
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //    var request = await _context.Requests.FindAsync(id);
-        //    if (request == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    _mapper.Map(model, request);
-
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!RequestExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
-
-        //    return NoContent();
-        //}
 
         [HttpPut("set/status/{requestId}/{status}")]
         [Authorize(Roles = "Admin")]
@@ -155,10 +128,5 @@ namespace ChemSolution_re_API.Controllers
 
             return NoContent();
         }
-
-        //private bool RequestExists(Guid id)
-        //{
-        //    return _context.Requests.Any(e => e.Id == id);
-        //}
     }
 }
