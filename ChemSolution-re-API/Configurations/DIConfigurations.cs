@@ -3,6 +3,7 @@ using ChemSolution_re_API.Entities;
 using ChemSolution_re_API.Services.Email;
 using ChemSolution_re_API.Services.JWT;
 using ChemSolution_re_API.Services.JWT.Settings;
+using ChemSolution_re_API.Services.Pay;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
@@ -25,6 +26,7 @@ namespace ChemSolution_re_API.Configurations
             });
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddTransient<IJwtService, JwtService>();
+            services.AddTransient<IPayService, PayService>();
 
             return services;
         }
