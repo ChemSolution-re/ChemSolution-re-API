@@ -20,10 +20,8 @@ namespace ChemSolution_re_API.DTO.Request
         public double Electronegativity { get; set; }
         [Range(0, int.MaxValue)]
         public int EnergyLevels { get; set; }
-        [Range(0, int.MaxValue)]
-        public int MeltingTemperature { get; set; }
-        [Range(0, int.MaxValue)]
-        public int BoilingTemperature { get; set; }
+        public double MeltingTemperature { get; set; }
+        public double BoilingTemperature { get; set; }
         public bool IsLocked { get; set; }
         public string Info { get; set; } = string.Empty;
         public string ImgSymbol { get; set; } = string.Empty;

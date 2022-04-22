@@ -12,8 +12,8 @@ namespace ChemSolution_re_API.DTO.Response
         public double AtomicRadius { get; set; }
         public double Electronegativity { get; set; }
         public int EnergyLevels { get; set; }
-        public int MeltingTemperature { get; set; }
-        public int BoilingTemperature { get; set; }
+        public double MeltingTemperature { get; set; }
+        public double BoilingTemperature { get; set; }
         public bool IsLocked { get; set; }
         public string Info { get; set; } = string.Empty;
         public string ImgSymbol { get; set; } = string.Empty;

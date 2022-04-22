@@ -86,7 +86,7 @@ namespace ChemSolution_re_API.Controllers
             var token = _jwtService.GetToken(_mapper.Map<JwtUser>(user));
 
             var response = _mapper.Map<AuthorizeResponse>(user);
-            response.Access_token = token;
+            response.AccessToken = token;
 
             return Ok(response);
         }
