@@ -10,7 +10,9 @@ namespace ChemSolution_re_API.MappingProfiles
     {
         public MappingProfile()
         {
-            CreateMap<RegisterRequest, User>();
+            CreateMap<RegisterRequest, User>()
+                .ForMember(x => x.DateOfBirth, opts => opts.MapFrom(s => s.DateOfBirth.ToUniversalTime()));
+
             CreateMap<User, JwtUser>();
             CreateMap<User, UserResponse>();
             CreateMap<User, AuthorizeResponse>()
