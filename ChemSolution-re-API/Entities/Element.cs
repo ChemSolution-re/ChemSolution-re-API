@@ -19,11 +19,11 @@ namespace ChemSolution_re_API.Entities
         [Range(0, double.MaxValue)]
         public double AtomicRadius { get; set; }
         [Range(0, double.MaxValue)]
-        public double Electronegativity { get; set; }
+        public double? Electronegativity { get; set; }
         [Range(0, int.MaxValue)]
         public int EnergyLevels { get; set; }
-        public double MeltingTemperature { get; set; }
-        public double BoilingTemperature { get; set; }
+        public double? MeltingTemperature { get; set; }
+        public double? BoilingTemperature { get; set; }
         public bool IsLocked { get; set; }
         public string Info { get; set; } = string.Empty;
         public string ImgSymbol { get; set; } = string.Empty;
