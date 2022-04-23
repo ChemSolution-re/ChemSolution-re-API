@@ -32,7 +32,6 @@ namespace ChemSolution_re_API.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "User")]
         public async Task<ActionResult<IEnumerable<BlogPostResponse>>> GetBlogPosts()
         {
             var response = await _context.BlogPosts

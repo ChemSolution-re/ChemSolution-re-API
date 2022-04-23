@@ -22,9 +22,9 @@ namespace ChemSolution_re_API.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
+        [HttpGet("ForAuth")]
         [Authorize(Roles = "User")]
-        public async Task<ActionResult<IEnumerable<ElementResponse>>> GetElements()
+        public async Task<ActionResult<IEnumerable<ElementResponse>>> GetElementsForAuth()
         {
             var userId = HttpContext.User.Identity!.Name;
 
@@ -33,6 +33,18 @@ namespace ChemSolution_re_API.Controllers
                 .Include(p => p.ElementValences)
                 .Include(p => p.Users)
                 .Where(p => !p.IsLocked || p.Users.Any(x => x.Id.ToString() == userId))
+                .ToListAsync();
+
+            return Ok(_mapper.Map<IEnumerable<ElementResponse>>(response));
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<ElementResponse>>> GetElements()
+        {
+            var response = await _context.Elements
+                .Include(p => p.Materials)
+                .Include(p => p.ElementValences)
+                .Where(p => !p.IsLocked)
                 .ToListAsync();
 
             return Ok(_mapper.Map<IEnumerable<ElementResponse>>(response));
