@@ -22,11 +22,34 @@ namespace ChemSolution_re_API.Controllers
             _mapper = mapper;
         }
 
-        // GET: api/BlogPosts
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<BlogPostResponse>>> GetBlogPosts()
+        // GET: api/BlogPosts/ForAdmin
+        [HttpGet("ForAdmin")]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<IEnumerable<BlogPostResponse>>> GetBlogPostsForAdmin()
         {
             var response = await _context.BlogPosts.ToListAsync();
+            return Ok(_mapper.Map<IEnumerable<BlogPostResponse>>(response));
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "User")]
+        public async Task<ActionResult<IEnumerable<BlogPostResponse>>> GetBlogPosts()
+        {
+            var response = await _context.BlogPosts
+                .Where(x => !x.IsLocked)
+                .ToListAsync();
+
+            return Ok(_mapper.Map<IEnumerable<BlogPostResponse>>(response));
+        }
+
+        [HttpGet("Search/{search}")]
+        [Authorize(Roles = "User")]
+        public async Task<ActionResult<IEnumerable<BlogPostResponse>>> GetElementsBySearchString(string search)
+        {
+            var response = await _context.BlogPosts
+                .Where(x => !x.IsLocked && (x.Title.Contains(search) || x.Information.Contains(search)))
+                .ToListAsync();
+
             return Ok(_mapper.Map<IEnumerable<BlogPostResponse>>(response));
         }
 

@@ -22,9 +22,26 @@ namespace ChemSolution_re_API.Controllers
             _mapper = mapper;
         }
 
-        // GET: api/Elements
         [HttpGet]
+        [Authorize(Roles = "User")]
         public async Task<ActionResult<IEnumerable<ElementResponse>>> GetElements()
+        {
+            var userId = HttpContext.User.Identity!.Name;
+
+            var response = await _context.Elements
+                .Include(p => p.Materials)
+                .Include(p => p.ElementValences)
+                .Include(p => p.Users)
+                .Where(p => !p.IsLocked || p.Users.Any(x => x.Id.ToString() == userId))
+                .ToListAsync();
+
+            return Ok(_mapper.Map<IEnumerable<ElementResponse>>(response));
+        }
+
+        // GET: api/Elements/ForAdmin
+        [HttpGet("ForAdmin")]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<IEnumerable<ElementResponse>>> GetElementsForAdmin()
         {
             var response = await _context.Elements
                 .Include(p => p.Materials)
@@ -34,8 +51,24 @@ namespace ChemSolution_re_API.Controllers
             return Ok(_mapper.Map<IEnumerable<ElementResponse>>(response));
         }
 
+        [HttpGet("Search/{search}")]
+        [Authorize(Roles = "User")]
+        public async Task<ActionResult<IEnumerable<ElementResponse>>> GetElementsBySearchString(string search)
+        {
+            var userId = HttpContext.User.Identity!.Name;
+
+            var response = await _context.Elements
+                .Include(p => p.Materials)
+                .Include(p => p.ElementValences)
+                .Where(p => !p.IsLocked || (p.Users.Any(x => x.Id.ToString() == userId) && (p.Symbol.Contains(search) || p.Info.Contains(search))))
+                .ToListAsync();
+
+            return Ok(_mapper.Map<IEnumerable<ElementResponse>>(response));
+        }
+
         // GET: api/Elements/5
         [HttpGet("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<ElementResponse>> GetElement(int id)
         {
             var element = await _context.Elements
