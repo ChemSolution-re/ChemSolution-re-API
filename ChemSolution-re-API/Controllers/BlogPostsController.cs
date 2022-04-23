@@ -3,6 +3,7 @@ using ChemSolution_re_API.Data;
 using ChemSolution_re_API.DTO.Request;
 using ChemSolution_re_API.DTO.Response;
 using ChemSolution_re_API.Entities;
+using ChemSolution_re_API.Entities.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -31,14 +32,23 @@ namespace ChemSolution_re_API.Controllers
             return Ok(_mapper.Map<IEnumerable<BlogPostResponse>>(response));
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<BlogPostResponse>>> GetBlogPosts()
+        [HttpGet("{blogPostCategory}")]
+        public async Task<ActionResult<IEnumerable<BlogPostCardResponse>>> GetBlogPosts(string blogPostCategory)
         {
-            var response = await _context.BlogPosts
-                .Where(x => !x.IsLocked)
-                .ToListAsync();
+            try
+            {
+                var category = Enum.Parse<BlogPostCategory>(blogPostCategory);
 
-            return Ok(_mapper.Map<IEnumerable<BlogPostResponse>>(response));
+                var response = await _context.BlogPosts
+                    .Where(x => x.BlogPostCategory == category)
+                    .ToListAsync();
+
+                return Ok(_mapper.Map<IEnumerable<BlogPostCardResponse>>(response));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet("Search/{search}")]

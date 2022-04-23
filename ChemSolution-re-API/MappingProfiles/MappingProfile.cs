@@ -19,6 +19,7 @@ namespace ChemSolution_re_API.MappingProfiles
                 .ForMember(x => x.UserId, opts => opts.MapFrom(s => s.Id));
 
             CreateMap<BlogPost, BlogPostResponse>();
+            CreateMap<BlogPost, BlogPostCardResponse>();
             CreateMap<CreateBlogPost, BlogPost>();
             CreateMap<UpdateBlogPost, BlogPost>();
 
