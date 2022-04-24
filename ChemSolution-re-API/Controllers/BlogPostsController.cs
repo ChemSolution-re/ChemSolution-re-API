@@ -32,7 +32,7 @@ namespace ChemSolution_re_API.Controllers
             return Ok(_mapper.Map<IEnumerable<BlogPostResponse>>(response));
         }
 
-        [HttpGet("{blogPostCategory}")]
+        [HttpGet("all/{blogPostCategory}")]
         public async Task<ActionResult<IEnumerable<BlogPostCardResponse>>> GetBlogPosts(string blogPostCategory)
         {
             try
@@ -64,16 +64,27 @@ namespace ChemSolution_re_API.Controllers
 
         // GET: api/BlogPosts/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<BlogPostResponse>> GetBlogPost(Guid id)
+        public async Task<ActionResult<BlogPostCardInfoResponse>> GetBlogPost(Guid id)
         {
-            var blogPost = await _context.BlogPosts.FindAsync(id);
+            var userId = HttpContext.User.Identity?.Name;
+
+            var blogPost = await _context.BlogPosts
+                .Include(x => x.Users.Where(x => x.Id.ToString() == (userId ?? "")))
+                .SingleOrDefaultAsync(x => x.BlogPostId == id);
 
             if (blogPost == null)
             {
                 return NotFound();
             }
 
-            return _mapper.Map<BlogPostResponse>(blogPost);
+            if (userId != null)
+            {
+                return _mapper.Map<BlogPostCardInfoResponse>(blogPost);
+            }
+            else
+            {
+                return blogPost.IsLocked ? StatusCode(StatusCodes.Status403Forbidden) : _mapper.Map<BlogPostCardInfoResponse>(blogPost);
+            }
         }
 
         // PUT: api/BlogPosts/5
