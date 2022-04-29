@@ -23,7 +23,15 @@ using (var scope = app.Services.CreateScope())
 
 // Configure the HTTP request pipeline.
 app.UseSwagger();
-app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ChemSolution API v1"));
+app.UseSwaggerUI(options =>
+{
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "ChemSolution API v1");
+
+    if (app.Environment.IsProduction())
+    {
+        options.RoutePrefix = string.Empty;
+    }
+});
 
 app.UseHttpsRedirection();
 app.UseCors(x => x

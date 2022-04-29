@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Converters;
+using System.Reflection;
 
 namespace ChemSolution_re_API.Configurations
 {
@@ -55,6 +56,9 @@ namespace ChemSolution_re_API.Configurations
                 {
                     { jwtSecurityScheme, Array.Empty<string>() }
                 });
+
+                var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
             });
 
             return services;
