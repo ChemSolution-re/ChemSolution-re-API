@@ -156,6 +156,87 @@ namespace ChemSolution_re_API.Controllers
             return NoContent();
         }
 
+        [HttpPost("liked/add/{postId}")]
+        [Authorize]
+        public async Task<IActionResult> AddLikedPost(Guid postId)
+        {
+            var id = HttpContext.User.Identity?.Name;
+
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id.ToString() == id);
+
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
+
+            var post = await _context.BlogPosts.FindAsync(postId);
+
+            if (post != null)
+            {
+                try
+                {
+                    user.BlogPosts.Add(post);
+                    await _context.SaveChangesAsync();
+                    return Ok();
+                }
+                catch
+                {
+                    return Conflict();
+                }
+            }
+            return NotFound("BlogPost not found");
+        }
+
+        [HttpPost("liked/remove/{postId}")]
+        [Authorize]
+        public async Task<IActionResult> RemoveLikedPost(Guid postId)
+        {
+            var id = HttpContext.User.Identity?.Name;
+
+            var user = await _context.Users
+                .Include(p => p.BlogPosts)
+                .FirstOrDefaultAsync(u => u.Id.ToString() == id);
+
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
+
+            var post = await _context.BlogPosts.FindAsync(postId);
+            if (post != null)
+            {
+                try
+                {
+                    user.BlogPosts.Remove(post);
+                    await _context.SaveChangesAsync();
+                    return Ok();
+                }
+                catch
+                {
+                    return Conflict();
+                }
+            }
+            return NotFound("BlogPost not found");
+        }
+
+        [HttpGet("allLiked")]
+        [Authorize]
+        public async Task<ActionResult<IEnumerable<BlogPostCardResponse>>> GetLikedBlogPosts()
+        {
+            var id = HttpContext.User.Identity?.Name;
+
+            var user = await _context.Users
+                .Include(p => p.BlogPosts)
+                .FirstOrDefaultAsync(u => u.Id.ToString() == id);
+
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
+
+            return Ok(_mapper.Map<IEnumerable<BlogPostCardResponse>>(user.BlogPosts));
+        }
+
         private bool BlogPostExists(Guid id)
         {
             return _context.BlogPosts.Any(e => e.BlogPostId == id);
