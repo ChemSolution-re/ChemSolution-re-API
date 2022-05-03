@@ -9,7 +9,7 @@ namespace ChemSolution_re_API.DTO.Response
         public string Name { get; set; } = string.Empty;
         public double AtomicWeight { get; set; }
         public int NeutronQuantity { get; set; }
-        public double AtomicRadius { get; set; }
+        public double? AtomicRadius { get; set; }
         public double? Electronegativity { get; set; }
         public int EnergyLevels { get; set; }
         public double? MeltingTemperature { get; set; }

@@ -17,7 +17,7 @@ namespace ChemSolution_re_API.Entities
         [Range(0, int.MaxValue)]
         public int NeutronQuantity { get; set; }
         [Range(0, double.MaxValue)]
-        public double AtomicRadius { get; set; }
+        public double? AtomicRadius { get; set; }
         [Range(0, double.MaxValue)]
         public double? Electronegativity { get; set; }
         [Range(0, int.MaxValue)]
