@@ -11,5 +11,6 @@
         Post_transitionMetals = 6,
         NobleGases = 7,
         Non_metals = 8,
+        Unknown = 9,
     }
 }
