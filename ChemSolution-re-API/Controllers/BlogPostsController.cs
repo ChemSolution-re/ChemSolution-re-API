@@ -64,7 +64,7 @@ namespace ChemSolution_re_API.Controllers
 
         // GET: api/BlogPosts/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<BlogPostCardInfoResponse>> GetBlogPost(Guid id)
+        public async Task<ActionResult<BlogPostPageResponse>> GetBlogPost(Guid id)
         {
             var userId = HttpContext.User.Identity?.Name;
 
@@ -79,11 +79,11 @@ namespace ChemSolution_re_API.Controllers
 
             if (userId != null)
             {
-                return _mapper.Map<BlogPostCardInfoResponse>(blogPost);
+                return _mapper.Map<BlogPostPageResponse>(blogPost);
             }
             else
             {
-                return blogPost.IsLocked ? StatusCode(StatusCodes.Status403Forbidden) : _mapper.Map<BlogPostCardInfoResponse>(blogPost);
+                return blogPost.IsLocked ? Forbid() : _mapper.Map<BlogPostPageResponse>(blogPost);
             }
         }
 

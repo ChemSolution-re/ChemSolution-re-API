@@ -20,7 +20,7 @@ namespace ChemSolution_re_API.MappingProfiles
 
             CreateMap<BlogPost, BlogPostResponse>();
             CreateMap<BlogPost, BlogPostCardResponse>();
-            CreateMap<BlogPost, BlogPostCardInfoResponse>()
+            CreateMap<BlogPost, BlogPostPageResponse>()
                 .ForMember(x => x.IsLiked, opts => opts.MapFrom(s => s.Users.Any()));
             CreateMap<CreateBlogPost, BlogPost>();
             CreateMap<UpdateBlogPost, BlogPost>();
