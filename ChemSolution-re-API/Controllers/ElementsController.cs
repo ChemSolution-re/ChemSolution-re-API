@@ -86,7 +86,7 @@ namespace ChemSolution_re_API.Controllers
         // PUT: api/Elements/5
         [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutElement(int id, CreateElement model)
+        public async Task<IActionResult> PutElement(int id, UpdateElement model)
         {
             if (id != model.ElementId)
             {
