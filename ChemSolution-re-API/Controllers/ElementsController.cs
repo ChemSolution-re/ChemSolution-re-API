@@ -24,7 +24,7 @@ namespace ChemSolution_re_API.Controllers
 
         [HttpGet("ForAuth")]
         [Authorize(Roles = "User")]
-        public async Task<ActionResult<IEnumerable<ElementResponse>>> GetElementsForAuth()
+        public async Task<IEnumerable<ElementResponseForAuthUser>> GetElementsForAuth()
         {
             var userId = HttpContext.User.Identity!.Name;
 
@@ -32,50 +32,37 @@ namespace ChemSolution_re_API.Controllers
                 .Include(p => p.Materials)
                 .Include(p => p.ElementValences)
                 .Include(p => p.Users)
-                .Where(p => !p.IsLocked || p.Users.Any(x => x.Id.ToString() == userId))
                 .ToListAsync();
 
-            return Ok(_mapper.Map<IEnumerable<ElementResponse>>(response));
+            return response.Select(x =>
+            {
+                var tmp = _mapper.Map<ElementResponseForAuthUser>(x);
+                tmp.IsBought = x.Users.Any(x => x.Id.ToString() == userId);
+                return tmp;
+            });
+        }
+
+        [HttpGet("ForAdmin")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IEnumerable<ElementResponse>> GetElementsForAdmin()
+        {
+            var response = await _context.Elements
+                .Include(p => p.Materials)
+                .Include(p => p.ElementValences)
+                .ToListAsync();
+
+            return _mapper.Map<IEnumerable<ElementResponse>>(response);
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ElementResponse>>> GetElements()
-        {
-            var response = await _context.Elements
-                .Include(p => p.Materials)
-                .Include(p => p.ElementValences)
-                .Where(p => !p.IsLocked)
-                .ToListAsync();
-
-            return Ok(_mapper.Map<IEnumerable<ElementResponse>>(response));
-        }
-
-        // GET: api/Elements/ForAdmin
-        [HttpGet("ForAdmin")]
-        [Authorize(Roles = "Admin")]
-        public async Task<ActionResult<IEnumerable<ElementResponse>>> GetElementsForAdmin()
+        public async Task<IEnumerable<ElementResponse>> GetElements()
         {
             var response = await _context.Elements
                 .Include(p => p.Materials)
                 .Include(p => p.ElementValences)
                 .ToListAsync();
 
-            return Ok(_mapper.Map<IEnumerable<ElementResponse>>(response));
-        }
-
-        [HttpGet("Search/{search}")]
-        [Authorize(Roles = "User")]
-        public async Task<ActionResult<IEnumerable<ElementResponse>>> GetElementsBySearchString(string search)
-        {
-            var userId = HttpContext.User.Identity!.Name;
-
-            var response = await _context.Elements
-                .Include(p => p.Materials)
-                .Include(p => p.ElementValences)
-                .Where(p => !p.IsLocked || (p.Users.Any(x => x.Id.ToString() == userId) && (p.Symbol.Contains(search) || p.Info.Contains(search))))
-                .ToListAsync();
-
-            return Ok(_mapper.Map<IEnumerable<ElementResponse>>(response));
+            return _mapper.Map<IEnumerable<ElementResponse>>(response);
         }
 
         // GET: api/Elements/5

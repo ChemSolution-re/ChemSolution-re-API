@@ -37,6 +37,7 @@ namespace ChemSolution_re_API.MappingProfiles
             CreateMap<CreateRequest, Request>();
 
             CreateMap<Element, ElementResponse>();
+            CreateMap<Element, ElementResponseForAuthUser>();
             CreateMap<CreateElement, Element>();
             CreateMap<UpdateElement, Element>();
 
