@@ -7,8 +7,8 @@ namespace ChemSolution_re_API.Services.Email
 {
     public class EmailService : IEmailService
     {
-        private readonly string _serviceEmail = "fa3af6e8a3a1e8";
-        private readonly string _serviceEmailPassword = "fabcf2955ab190";
+        private readonly string _serviceEmail = "2f7a25b270f5d7";
+        private readonly string _serviceEmailPassword = "f25dd677f32317";
 
         public async Task SendEmailAsync(string to, string subject, string html, string? from = null)
         {
