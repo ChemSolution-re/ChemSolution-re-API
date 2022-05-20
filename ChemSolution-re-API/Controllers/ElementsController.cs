@@ -67,7 +67,6 @@ namespace ChemSolution_re_API.Controllers
 
         // GET: api/Elements/5
         [HttpGet("{id}")]
-        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<ElementResponse>> GetElement(int id)
         {
             var element = await _context.Elements
