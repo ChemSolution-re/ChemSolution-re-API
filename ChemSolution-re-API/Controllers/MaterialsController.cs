@@ -48,6 +48,22 @@ namespace ChemSolution_re_API.Controllers
             return _mapper.Map<MaterialResponse>(material);
         }
 
+        [Authorize(Roles = "User")]
+        [HttpGet("OwnMaterials")]
+        public async Task<ActionResult<IEnumerable<MaterialResponse>>> GetOwnMaterials()
+        {
+            var user = await _context.Users
+                .Include(x => x.Materials)
+                .SingleOrDefaultAsync(x => x.Id.ToString() == User.Identity!.Name);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(_mapper.Map<IEnumerable<MaterialResponse>>(user.Materials));
+        }
+
         // PUT: api/Materials/5
         [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]

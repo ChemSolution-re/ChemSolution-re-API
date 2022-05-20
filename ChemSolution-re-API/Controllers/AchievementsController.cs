@@ -44,6 +44,22 @@ namespace ChemSolution_re_API.Controllers
             return _mapper.Map<AchievementResponse>(achievement);
         }
 
+        [Authorize(Roles = "User")]
+        [HttpGet("OwnAchievements")]
+        public async Task<ActionResult<IEnumerable<AchievementResponse>>> GetOwnAchievements()
+        {
+            var user = await _context.Users
+                .Include(x => x.Achievements)
+                .SingleOrDefaultAsync(x => x.Id.ToString() == User.Identity!.Name);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(_mapper.Map<IEnumerable<AchievementResponse>>(user.Achievements));
+        }
+
         // PUT: api/Achievements/5
         [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
