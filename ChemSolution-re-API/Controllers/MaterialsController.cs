@@ -65,7 +65,7 @@ namespace ChemSolution_re_API.Controllers
         }
 
         // PUT: api/Materials/5
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,User")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutMaterial(Guid id, UpdateMaterial model)
         {
@@ -105,7 +105,7 @@ namespace ChemSolution_re_API.Controllers
         }
 
         // POST: api/Materials
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,User")]
         [HttpPost]
         public async Task<ActionResult<MaterialResponse>> PostMaterial(CreateMaterial model)
         {
@@ -118,7 +118,7 @@ namespace ChemSolution_re_API.Controllers
         }
 
         // DELETE: api/Materials/5
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,User")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMaterial(Guid id)
         {
